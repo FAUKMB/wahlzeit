@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
+<appengine-web-app
+	xmlns="http://appengine.google.com/ns/1.0">
 
-    <application>dirkriehle-wahlzeit</application>
-    <version>1</version>
+	<application>dirkriehle-wahlzeit</application>
+	<version>1</version>
 
-    <threadsafe>true</threadsafe>
-    <sessions-enabled>true</sessions-enabled>
-    <runtime>java8</runtime>
+	<threadsafe>true</threadsafe>
+	<sessions-enabled>true</sessions-enabled>
+	<runtime>java8</runtime>
 
-    <system-properties>
-        <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
-    </system-properties>
+	<system-properties>
+		<property name="java.util.logging.config.file"
+			value="WEB-INF/logging.properties" />
+	</system-properties>
 
-    <static-files>
-        <include path="/**.ico" />
-        <include path="/config/**" />
-    </static-files>
+	<static-files>
+		<include path="/**.ico" />
+		<include path="/config/**" />
+	</static-files>
 </appengine-web-app>
