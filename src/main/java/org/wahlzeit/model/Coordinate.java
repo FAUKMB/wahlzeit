@@ -1,3 +1,13 @@
+/*
+ * Coordinate
+ * 
+ * version 1.0
+ * 
+ * Date: 30.10.18
+ * 
+ * License: AGPLv3
+ */
+
 package org.wahlzeit.model;
 
 public class Coordinate {
