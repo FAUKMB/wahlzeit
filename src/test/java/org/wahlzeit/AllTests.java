@@ -23,7 +23,7 @@ import org.wahlzeit.services.mailing.EmailServiceTestSuite;
 @SuiteClasses({TellFriendTest.class, AccessRightsTest.class, CoordinateTest.class, FlagReasonTest.class,
 	GenderTest.class, GuestTest.class, PhotoFilterTest.class, TagsTest.class, UserStatusTest.class,
 	ValueTest.class, EmailAddressTest.class, LogBuilderTest.class, EmailServiceTestSuite.class, 
-	StringUtilTest.class, VersionTest.class})
+	StringUtilTest.class, VersionTest.class, PhotoTypeTest.class})
 public class AllTests {
 
 }

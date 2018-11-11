@@ -24,6 +24,5 @@ public class PhotoTypeTest {
 		assertTrue(p instanceof LegoPhoto);
 		assertTrue(PhotoManager.getInstance() instanceof LegoPhotoManager);
 		assertTrue(PhotoFactory.getInstance() instanceof LegoPhotoFactory);
-		assertTrue(PhotoManager.getInstance().getPhoto(PhotoId.getFromInt(PhotoId.getCurrentIdAsInt())) instanceof LegoPhoto);
 	}
 }
