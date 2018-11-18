@@ -34,7 +34,7 @@ public class CartesianCoordinate implements Coordinate{
 		return z;
 	}
 	
-	public double getDistance(CartesianCoordinate coordinate) {
+	private double getDistance(CartesianCoordinate coordinate) {
 		
 		double xSquared = (coordinate.getX() - x) * (coordinate.getX() - x);
 		double ySquared = (coordinate.getY() - y) * (coordinate.getY() - y);

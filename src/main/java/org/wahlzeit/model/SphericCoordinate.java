@@ -71,18 +71,27 @@ public class SphericCoordinate implements Coordinate {
 			throw new IllegalArgumentException("Can't compute central angle");
 		}
 		SphericCoordinate sc = c.asSphericCoordinate();
-		double sinPhi = Math.sin(Math.abs((phi - sc.getPhi()) /2));
-		double sinTheta = Math.sin(Math.abs((theta - sc.getTheta()) / 2));
-		return 2 * Math.asin(Math.sqrt(sinPhi * sinPhi + Math.cos(phi) * Math.cos(sc.getPhi()) *
+		return doGetCentralAngle(sc);
+	}
+	
+	private double doGetCentralAngle(SphericCoordinate c) {
+		double sinPhi = Math.sin(Math.abs((phi - c.getPhi()) /2));
+		double sinTheta = Math.sin(Math.abs((theta - c.getTheta()) / 2));
+		return 2 * Math.asin(Math.sqrt(sinPhi * sinPhi + Math.cos(phi) * Math.cos(c.getPhi()) *
 				sinTheta * sinTheta));
 	}
-
+	
+	
 	@Override
 	public boolean isEqual(Coordinate c) {
 		if(c == null) {
 			return false;
 		}
 		SphericCoordinate sc = c.asSphericCoordinate();
+		return isEqual(sc);
+	}
+	
+	private boolean isEqual(SphericCoordinate sc) {
 		return Math.abs(phi - sc.getPhi()) < EPSILON && Math.abs(theta - sc.getTheta()) < EPSILON && 
 				Math.abs(radius - sc.getRadius()) < EPSILON;
 	}

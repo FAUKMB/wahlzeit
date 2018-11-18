@@ -37,10 +37,10 @@ public class CoordinateTest {
 	
 	@Test
 	public void testDistance() {
-		assertEquals(1.0, coordinate0.getDistance(coordinate2), Coordinate.EPSILON);
-		assertEquals(Math.sqrt(3.0), coordinate0.getDistance(coordinate1), Coordinate.EPSILON);
-		assertEquals(Math.sqrt(2.0), coordinate2.getDistance(coordinate1), Coordinate.EPSILON);
-		assertEquals(Math.sqrt(29.0), coordinate1.getDistance(coordinateNegative), Coordinate.EPSILON);
+		assertEquals(1.0, coordinate0.getCartesianDistance(coordinate2), Coordinate.EPSILON);
+		assertEquals(Math.sqrt(3.0), coordinate0.getCartesianDistance(coordinate1), Coordinate.EPSILON);
+		assertEquals(Math.sqrt(2.0), coordinate2.getCartesianDistance(coordinate1), Coordinate.EPSILON);
+		assertEquals(Math.sqrt(29.0), coordinate1.getCartesianDistance(coordinateNegative), Coordinate.EPSILON);
 	}
 	
 	@Test
