@@ -10,7 +10,7 @@
 
 package org.wahlzeit.model;
 
-public class CartesianCoordinate implements Coordinate{
+public class CartesianCoordinate extends AbstractCoordinate{
 	private double x;
 	private double y;
 	private double z;
@@ -43,7 +43,9 @@ public class CartesianCoordinate implements Coordinate{
 		return Math.sqrt(xSquared + ySquared + zSquared);
 	}
 	
-	private boolean isEqual(CartesianCoordinate c) {
+	@Override
+	protected boolean doIsEqual(Coordinate cc) {
+		CartesianCoordinate c = cc.asCartesianCoordinate();
 		return Math.abs(x - c.getX()) < EPSILON && Math.abs(y - c.getY()) < EPSILON && 
 				Math.abs(z - c.getZ()) < EPSILON;
 	}
@@ -85,19 +87,5 @@ public class CartesianCoordinate implements Coordinate{
 			phi = Math.signum(y) * Math.PI/2;
 		}
 		return new SphericCoordinate(phi, theta, radius);
-	}
-
-	@Override
-	public double getCentralAngle(Coordinate c) {
-		SphericCoordinate sc = this.asSphericCoordinate();
-		return sc.getCentralAngle(c);
-	}
-
-	@Override
-	public boolean isEqual(Coordinate c) {
-		if(c == null) {
-			return false;
-		}
-		return isEqual(c.asCartesianCoordinate());
 	}
 }

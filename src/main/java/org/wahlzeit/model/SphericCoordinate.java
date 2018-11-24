@@ -10,7 +10,7 @@
 
 package org.wahlzeit.model;
 
-public class SphericCoordinate implements Coordinate {
+public class SphericCoordinate extends AbstractCoordinate {
 	
 	private double phi;
 	private double theta;
@@ -55,12 +55,6 @@ public class SphericCoordinate implements Coordinate {
 	}
 
 	@Override
-	public double getCartesianDistance(Coordinate c) {
-		CartesianCoordinate cc = this.asCartesianCoordinate();
-		return cc.getCartesianDistance(c);
-	}
-
-	@Override
 	public SphericCoordinate asSphericCoordinate() {
 		return this;
 	}
@@ -87,11 +81,11 @@ public class SphericCoordinate implements Coordinate {
 		if(c == null) {
 			return false;
 		}
-		SphericCoordinate sc = c.asSphericCoordinate();
-		return isEqual(sc);
+		return doIsEqual(c);
 	}
 	
-	private boolean isEqual(SphericCoordinate sc) {
+	protected boolean doIsEqual(Coordinate c) {
+		SphericCoordinate sc = c.asSphericCoordinate();
 		return Math.abs(phi - sc.getPhi()) < EPSILON && Math.abs(theta - sc.getTheta()) < EPSILON && 
 				Math.abs(radius - sc.getRadius()) < EPSILON;
 	}
