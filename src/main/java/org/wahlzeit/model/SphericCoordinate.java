@@ -10,6 +10,12 @@
 
 package org.wahlzeit.model;
 
+/*
+ * Invariants:
+ * radius is not Double.Nan or infinite
+ * phi is in between 0 and 2*Math.PI and finite and not Double.NaN
+ * theta is in between 0 and Math.PI and finite and not Double.NaN
+ */
 public class SphericCoordinate extends AbstractCoordinate {
 	
 	private double phi;
@@ -20,50 +26,63 @@ public class SphericCoordinate extends AbstractCoordinate {
 		this.phi =  phi;
 		this.theta = theta;
 		this.radius = radius;
+		assertClassInvariants();
 	}
 	
 	public double getPhi() {
+		assertClassInvariants();
 		return phi;
 	}
 
 	public void setPhi(double phi) {
+		assertClassInvariants();
 		this.phi = phi;
+		assertClassInvariants();
 	}
 
 	public double getTheta() {
+		assertClassInvariants();
 		return theta;
 	}
 
 	public void setTheta(double theta) {
+		assertClassInvariants();
 		this.theta = theta;
+		assertClassInvariants();
 	}
 
 	public double getRadius() {
+		assertClassInvariants();
 		return radius;
 	}
 
 	public void setRadius(double radius) {
+		assertClassInvariants();
 		this.radius = radius;
+		assertClassInvariants();
 	}
 
 	@Override
 	public CartesianCoordinate asCartesianCoordinate() {
+		assertClassInvariants();
+		SphericCoordinate before = this;
 		double x = radius * Math.sin(theta) * Math.cos(phi);
 		double y = radius * Math.sin(theta) * Math.sin(phi);
 		double z = radius * Math.cos(theta);
-		return new CartesianCoordinate(x, y, z);
+		CartesianCoordinate retval = new CartesianCoordinate(x, y, z);
+		retval.assertClassInvariants();
+		assert this.doIsEqual(before);
+		return retval;
 	}
 
 	@Override
 	public SphericCoordinate asSphericCoordinate() {
+		assertClassInvariants();
 		return this;
 	}
 
 	@Override
 	public double getCentralAngle(Coordinate c) {
-		if(c == null) {
-			throw new IllegalArgumentException("Can't compute central angle");
-		}
 		SphericCoordinate sc = c.asSphericCoordinate();
 		return doGetCentralAngle(sc);
 	}
@@ -78,9 +97,6 @@ public class SphericCoordinate extends AbstractCoordinate {
 	
 	@Override
 	public boolean isEqual(Coordinate c) {
-		if(c == null) {
-			return false;
-		}
 		return doIsEqual(c);
 	}
 	
@@ -88,6 +104,27 @@ public class SphericCoordinate extends AbstractCoordinate {
 		SphericCoordinate sc = c.asSphericCoordinate();
 		return Math.abs(phi - sc.getPhi()) < EPSILON && Math.abs(theta - sc.getTheta()) < EPSILON && 
 				Math.abs(radius - sc.getRadius()) < EPSILON;
+	}
+
+	@Override
+	protected void assertNotZero() {
+		if(Math.abs(radius) < EPSILON) {
+			throw new IllegalArgumentException();
+		}
+	}
+
+
+	@Override
+	protected void assertClassInvariants() {
+		if(Double.isInfinite(radius) || Double.isNaN(radius)) {
+			throw new IllegalStateException();
+		}
+		if(phi < 0.0 || phi > 2 * Math.PI || Double.isInfinite(phi) || Double.isNaN(phi)) {
+			throw new IllegalStateException();
+		}
+		if(theta < 0.0 || theta > 2 * Math.PI || Double.isInfinite(theta) || Double.isNaN(theta)) {
+			throw new IllegalStateException();
+		}
 	}
 
 }

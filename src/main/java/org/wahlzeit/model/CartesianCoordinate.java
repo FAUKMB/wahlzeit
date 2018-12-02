@@ -10,6 +10,10 @@
 
 package org.wahlzeit.model;
 
+/*
+ * Invariants:
+ * x, y and z are finite and not Double.NaN
+ */
 public class CartesianCoordinate extends AbstractCoordinate{
 	private double x;
 	private double y;
@@ -20,17 +24,21 @@ public class CartesianCoordinate extends AbstractCoordinate{
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		assertClassInvariants();
 	}
 	
 	public double getX() {
+		assertClassInvariants();
 		return x;
 	}
 	
 	public double getY() {
+		assertClassInvariants();
 		return y;
 	}
 	
 	public double getZ() {
+		assertClassInvariants();
 		return z;
 	}
 	
@@ -59,19 +67,19 @@ public class CartesianCoordinate extends AbstractCoordinate{
 
 	@Override
 	public CartesianCoordinate asCartesianCoordinate() {
+		assertClassInvariants();
 		return this;
 	}
 
 	@Override
 	public double getCartesianDistance(Coordinate c) {
-		if(c == null) {
-			throw new IllegalArgumentException("Can't compute distance");
-		}
 		return getDistance(c.asCartesianCoordinate());
 	}
 
 	@Override
 	public SphericCoordinate asSphericCoordinate() {
+		assertClassInvariants();
+		CartesianCoordinate before = this;
 		double radius = Math.sqrt(x * x + y * y + z * z);
 		if(radius == 0) {
 			return new SphericCoordinate(0.0, 0.0, 0.0);
@@ -86,6 +94,25 @@ public class CartesianCoordinate extends AbstractCoordinate{
 		} else {
 			phi = Math.signum(y) * Math.PI/2;
 		}
-		return new SphericCoordinate(phi, theta, radius);
+		SphericCoordinate retval = new SphericCoordinate(phi, theta, radius);
+		retval.assertClassInvariants();
+		assert this.doIsEqual(before);
+		return retval;
+	}
+
+	@Override
+	protected void assertNotZero() {
+		if(Math.abs(x) < EPSILON && Math.abs(y) < EPSILON && Math.abs(z) < EPSILON) {
+			throw new IllegalArgumentException();
+		}
+	}
+
+	@Override
+	protected void assertClassInvariants() {
+		if(Double.isNaN(x) || Double.isInfinite(x) ||
+		   Double.isNaN(y) || Double.isInfinite(y) ||
+		   Double.isNaN(z) || Double.isInfinite(z)) {
+				throw new IllegalStateException();
+		}
 	}
 }
