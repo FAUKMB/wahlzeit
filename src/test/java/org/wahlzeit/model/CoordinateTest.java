@@ -36,7 +36,7 @@ public class CoordinateTest {
 	}
 	
 	@Test
-	public void testDistance() {
+	public void testDistance() throws CoordinateException {
 		assertEquals(1.0, coordinate0.getCartesianDistance(coordinate2), Coordinate.EPSILON);
 		assertEquals(Math.sqrt(3.0), coordinate0.getCartesianDistance(coordinate1), Coordinate.EPSILON);
 		assertEquals(Math.sqrt(2.0), coordinate2.getCartesianDistance(coordinate1), Coordinate.EPSILON);
@@ -44,7 +44,7 @@ public class CoordinateTest {
 	}
 	
 	@Test
-	public void testEquals() {
+	public void testEquals() throws CoordinateException {
 		assertEquals(true, coordinate0.equals(new CartesianCoordinate(0.0, 0.0, 0.0)));
 		assertEquals(false, coordinate0.equals(coordinate1));
 		assertEquals(false, coordinate0.equals(coordinateNegative));
@@ -55,8 +55,38 @@ public class CoordinateTest {
 	}
 	
 	@Test
-	public void testAngle() {
+	public void testAngle() throws CoordinateException {
 		assertEquals(Math.PI/2, sc0.getCentralAngle(sc1), Coordinate.EPSILON);	
 		assertEquals(0.0, sc0.getCentralAngle(coordinate3), Coordinate.EPSILON);
+	}
+	
+	@Test(expected = CoordinateException.class)
+	public void testExceptionGetDistance() throws CoordinateException{
+		coordinate0.getCartesianDistance(null);
+	}
+	
+	@Test(expected = CoordinateException.class)
+	public void testExceptionGetAngle() throws CoordinateException{
+		coordinate0.getCentralAngle(null);
+	}
+	
+	@Test(expected = CoordinateException.class)
+	public void testExceptionIsEqual() throws CoordinateException{
+		coordinate0.isEqual(null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testExceptionSetRadius() {
+		sc0.setRadius(-3.0);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testExceptionSetPhi() {
+		sc0.setPhi(50);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testExceptiongetDistance() {
+		sc0.setTheta(50);
 	}
 }

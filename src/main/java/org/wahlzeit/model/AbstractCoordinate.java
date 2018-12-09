@@ -11,49 +11,64 @@
 package org.wahlzeit.model;
 
 public abstract class AbstractCoordinate implements Coordinate {
-	
-	public double getCartesianDistance(Coordinate c) {
-		assertNotNull(c);
-		assertClassInvariants();
-		Coordinate before = this;
-		CartesianCoordinate self = asCartesianCoordinate();
-		double retval = self.getCartesianDistance(c);
-		assertClassInvariants();
-		assert this.isEqual(before);
+
+	public double getCartesianDistance(Coordinate c) throws CoordinateException {
+		double retval = 0.0;
+		try {
+			assertNotNull(c);
+			assertClassInvariants();
+			Coordinate before = this;
+			CartesianCoordinate self = asCartesianCoordinate();
+			retval = self.getCartesianDistance(c);
+			assertClassInvariants();
+			assert this.isEqual(before);
+		} catch (IllegalArgumentException|IllegalStateException e) {
+			throw new CoordinateException(e.getMessage());
+		}
 		return retval;
 	}
-	
-	public double getCentralAngle(Coordinate c) {
-		assertNotNull(c);
-		assertNotZero();
-		assertClassInvariants();
-		Coordinate before = this;
-		c.asCartesianCoordinate().assertNotZero();
-		SphericCoordinate self = asSphericCoordinate();
-		double retval = self.getCentralAngle(c);
-		assertClassInvariants();
-		assert this.isEqual(before);
+
+	public double getCentralAngle(Coordinate c) throws CoordinateException {
+		double retval = 0.0;
+		try {
+			assertNotNull(c);
+			assertNotZero();
+			assertClassInvariants();
+			Coordinate before = this;
+			c.asCartesianCoordinate().assertNotZero();
+			SphericCoordinate self = asSphericCoordinate();
+			retval = self.getCentralAngle(c);
+			assertClassInvariants();
+			assert this.isEqual(before);
+		} catch (IllegalArgumentException|IllegalStateException e) {
+			throw new CoordinateException(e.getMessage());
+		}
 		return retval;
 	}
-	
-	public boolean isEqual(Coordinate c) {
-		assertNotNull(c);
-		assertClassInvariants();
-		boolean retval = doIsEqual(c);
-		assertClassInvariants();
+
+	public boolean isEqual(Coordinate c) throws CoordinateException {
+		boolean retval = false;
+		try {
+			assertNotNull(c);
+			assertClassInvariants();
+			retval = doIsEqual(c);
+			assertClassInvariants();
+		} catch (IllegalArgumentException|IllegalStateException e) {
+			throw new CoordinateException(e.getMessage());
+		}
 		return retval;
 	}
-	
-	private void assertNotNull(Coordinate c) {
-		if(c == null) {
+
+	protected void assertNotNull(Coordinate c) {
+		if (c == null) {
 			throw new IllegalArgumentException();
 		}
 	}
-	
+
 	abstract protected void assertNotZero();
-	
+
 	abstract protected void assertClassInvariants();
-	
+
 	abstract protected boolean doIsEqual(Coordinate c);
-	
+
 }

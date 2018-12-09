@@ -16,7 +16,7 @@ public class LegoPhotoFactory extends PhotoFactory {
 	 * @methodtype factory
 	 */
 	@Override
-	public Photo createPhoto() {
+	public Photo createPhoto(){
 		return new LegoPhoto();
 	}
 
@@ -24,7 +24,10 @@ public class LegoPhotoFactory extends PhotoFactory {
 	 * Creates a new photo with the specified id
 	 */
 	@Override
-	public Photo createPhoto(PhotoId id) {
+	public Photo createPhoto(PhotoId id) throws IllegalArgumentException{
+		if(id == null) {
+			throw new IllegalArgumentException();
+		}
 		return new LegoPhoto(id);
 	}
 }

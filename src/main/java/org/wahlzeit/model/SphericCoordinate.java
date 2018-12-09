@@ -17,36 +17,42 @@ package org.wahlzeit.model;
  * theta is in between 0 and Math.PI and finite and not Double.NaN
  */
 public class SphericCoordinate extends AbstractCoordinate {
-	
+
 	private double phi;
 	private double theta;
 	private double radius;
 
-	public SphericCoordinate(double phi, double theta, double radius) {
-		this.phi =  phi;
+	public SphericCoordinate(double phi, double theta, double radius) throws IllegalStateException {
+		this.phi = phi;
 		this.theta = theta;
 		this.radius = radius;
 		assertClassInvariants();
 	}
-	
-	public double getPhi() {
+
+	public double getPhi() throws IllegalStateException {
 		assertClassInvariants();
 		return phi;
 	}
 
-	public void setPhi(double phi) {
+	public void setPhi(double phi) throws IllegalStateException, IllegalArgumentException {
 		assertClassInvariants();
+		if (invalidPhi(phi)) {
+			throw new IllegalArgumentException();
+		}
 		this.phi = phi;
 		assertClassInvariants();
 	}
 
-	public double getTheta() {
+	public double getTheta() throws IllegalStateException {
 		assertClassInvariants();
 		return theta;
 	}
 
-	public void setTheta(double theta) {
+	public void setTheta(double theta) throws IllegalStateException, IllegalArgumentException {
 		assertClassInvariants();
+		if (invalidTheta(theta)) {
+			throw new IllegalArgumentException();
+		}
 		this.theta = theta;
 		assertClassInvariants();
 	}
@@ -56,14 +62,17 @@ public class SphericCoordinate extends AbstractCoordinate {
 		return radius;
 	}
 
-	public void setRadius(double radius) {
+	public void setRadius(double radius) throws IllegalStateException, IllegalArgumentException {
 		assertClassInvariants();
+		if (invalidRadius(radius)) {
+			throw new IllegalArgumentException();
+		}
 		this.radius = radius;
 		assertClassInvariants();
 	}
 
 	@Override
-	public CartesianCoordinate asCartesianCoordinate() {
+	public CartesianCoordinate asCartesianCoordinate() throws IllegalStateException {
 		assertClassInvariants();
 		SphericCoordinate before = this;
 		double x = radius * Math.sin(theta) * Math.cos(phi);
@@ -76,55 +85,70 @@ public class SphericCoordinate extends AbstractCoordinate {
 	}
 
 	@Override
-	public SphericCoordinate asSphericCoordinate() {
+	public SphericCoordinate asSphericCoordinate() throws IllegalStateException {
 		assertClassInvariants();
 		return this;
 	}
 
 	@Override
-	public double getCentralAngle(Coordinate c) {
-		SphericCoordinate sc = c.asSphericCoordinate();
-		return doGetCentralAngle(sc);
+	public double getCentralAngle(Coordinate c) throws CoordinateException {
+		double ret = 0.0;
+		try {
+			assertNotNull(c);
+			assertClassInvariants();
+			assertNotZero();
+			c.asCartesianCoordinate().assertNotZero();
+			SphericCoordinate sc = c.asSphericCoordinate();
+			ret = doGetCentralAngle(sc);
+			assertClassInvariants();
+		} catch (IllegalArgumentException | IllegalStateException e) {
+			throw new CoordinateException(e.getMessage());
+		}
+		return ret;
 	}
-	
+
 	private double doGetCentralAngle(SphericCoordinate c) {
-		double sinPhi = Math.sin(Math.abs((phi - c.getPhi()) /2));
+		double sinPhi = Math.sin(Math.abs((phi - c.getPhi()) / 2));
 		double sinTheta = Math.sin(Math.abs((theta - c.getTheta()) / 2));
-		return 2 * Math.asin(Math.sqrt(sinPhi * sinPhi + Math.cos(phi) * Math.cos(c.getPhi()) *
-				sinTheta * sinTheta));
+		return 2 * Math.asin(Math.sqrt(sinPhi * sinPhi + Math.cos(phi) * Math.cos(c.getPhi()) * sinTheta * sinTheta));
 	}
-	
-	
-	@Override
-	public boolean isEqual(Coordinate c) {
-		return doIsEqual(c);
-	}
-	
+
 	protected boolean doIsEqual(Coordinate c) {
 		SphericCoordinate sc = c.asSphericCoordinate();
-		return Math.abs(phi - sc.getPhi()) < EPSILON && Math.abs(theta - sc.getTheta()) < EPSILON && 
-				Math.abs(radius - sc.getRadius()) < EPSILON;
+		return Math.abs(phi - sc.getPhi()) < EPSILON && Math.abs(theta - sc.getTheta()) < EPSILON
+				&& Math.abs(radius - sc.getRadius()) < EPSILON;
 	}
 
 	@Override
 	protected void assertNotZero() {
-		if(Math.abs(radius) < EPSILON) {
+		if (Math.abs(radius) < EPSILON) {
 			throw new IllegalArgumentException();
 		}
 	}
 
-
 	@Override
 	protected void assertClassInvariants() {
-		if(Double.isInfinite(radius) || Double.isNaN(radius)) {
+		if (invalidRadius(radius)) {
 			throw new IllegalStateException();
 		}
-		if(phi < 0.0 || phi > 2 * Math.PI || Double.isInfinite(phi) || Double.isNaN(phi)) {
+		if (invalidPhi(phi)) {
 			throw new IllegalStateException();
 		}
-		if(theta < 0.0 || theta > 2 * Math.PI || Double.isInfinite(theta) || Double.isNaN(theta)) {
+		if (invalidTheta(theta)) {
 			throw new IllegalStateException();
 		}
+	}
+
+	private boolean invalidTheta(double theta) {
+		return (theta < 0.0 || theta > 2 * Math.PI || Double.isInfinite(theta) || Double.isNaN(theta));
+	}
+
+	private boolean invalidPhi(double phi) {
+		return (phi < 0.0 || phi > 2 * Math.PI || Double.isInfinite(phi) || Double.isNaN(phi));
+	}
+
+	private boolean invalidRadius(double radius) {
+		return (Double.isInfinite(radius) || Double.isNaN(radius) || radius < 0);
 	}
 
 }

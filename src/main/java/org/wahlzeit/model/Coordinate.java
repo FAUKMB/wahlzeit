@@ -27,7 +27,7 @@ public interface Coordinate {
 	 * Postcondition: returns the distance to the given coordinate c
 	 * and the Coordinate is not modified
 	 */
-	public double getCartesianDistance(Coordinate c);
+	public double getCartesianDistance(Coordinate c) throws CoordinateException;
 	
 	/*
 	 * Precondition: none
@@ -42,12 +42,12 @@ public interface Coordinate {
 	 * 
 	 * Postcondition: returns the central angle and the Coordinate is not modified
 	 */
-	public double getCentralAngle(Coordinate c);
+	public double getCentralAngle(Coordinate c) throws CoordinateException;
 	
 	/*
 	 * Precondition: c is not null
 	 * 
 	 * Postcondition: returns true if the Coordinate and c are equal otherwise false
 	 */
-	public boolean isEqual(Coordinate c);
+	public boolean isEqual(Coordinate c) throws CoordinateException;
 }

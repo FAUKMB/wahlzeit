@@ -10,6 +10,7 @@
 
 package org.wahlzeit.model;
 
+
 public class LegoPhoto extends Photo {
 	
 	protected int pieceCount;
@@ -17,7 +18,7 @@ public class LegoPhoto extends Photo {
 	protected int weight;
 	protected ModelSize size;
 	
-	public LegoPhoto() {
+	public LegoPhoto(){
 		super();
 	}
 	
@@ -35,7 +36,8 @@ public class LegoPhoto extends Photo {
 	/**
 	 * @methodtype set
 	 */
-	public void setPieceCount(int pieceCount) {
+	public void setPieceCount(int pieceCount) throws IllegalArgumentException{
+		assertNotNegative(pieceCount);
 		this.pieceCount = pieceCount;
 	}
 	
@@ -49,7 +51,8 @@ public class LegoPhoto extends Photo {
 	/**
 	 * @methodtype set
 	 */
-	public void setBuildTime(int buildTime) {
+	public void setBuildTime(int buildTime) throws IllegalArgumentException{
+		assertNotNegative(buildTime);
 		this.buildTime = buildTime;
 	}
 	
@@ -63,7 +66,8 @@ public class LegoPhoto extends Photo {
 	/**
 	 * @methodtype set
 	 */
-	public void setWeight(int weight) {
+	public void setWeight(int weight) throws IllegalArgumentException{
+		assertNotNegative(weight);
 		this.weight = weight;
 	}
 	
@@ -77,8 +81,19 @@ public class LegoPhoto extends Photo {
 	/**
 	 * @methodtype set
 	 */
-	public void setSize(ModelSize size) {
+	public void setSize(ModelSize size) throws IllegalArgumentException{
+		assertNotNull(size);
 		this.size = size;
+	}
+	
+	private void assertNotNull(Object o) {
+		throw new IllegalArgumentException();
+	}
+	
+	private void assertNotNegative(int value) {
+		if(value < 0) {
+			throw new IllegalArgumentException();
+		}
 	}
 
 	
