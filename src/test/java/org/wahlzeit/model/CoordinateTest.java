@@ -26,13 +26,13 @@ public class CoordinateTest {
 	
 	@Before
 	public void setUp() {
-		coordinate0 = new CartesianCoordinate(0.0, 0.0, 0.0);
-		coordinate1 = new CartesianCoordinate(1.0, 1.0, 1.0);
-		coordinate2 = new CartesianCoordinate(1.0, 0.0, 0.0);
-		coordinate3 = new CartesianCoordinate(0.0, 0.0, 1.0);
-		coordinateNegative = new CartesianCoordinate(-2.0, -3.0, -1.0);
-		sc0 = new SphericCoordinate(0.0, 0.0, 1.0);
-		sc1 = new SphericCoordinate(0.0, Math.PI/2, 1);
+		coordinate0 = CartesianCoordinate.getCartesianCoordinate(0.0, 0.0, 0.0);
+		coordinate1 = CartesianCoordinate.getCartesianCoordinate(1.0, 1.0, 1.0);
+		coordinate2 = CartesianCoordinate.getCartesianCoordinate(1.0, 0.0, 0.0);
+		coordinate3 = CartesianCoordinate.getCartesianCoordinate(0.0, 0.0, 1.0);
+		coordinateNegative = CartesianCoordinate.getCartesianCoordinate(-2.0, -3.0, -1.0);
+		sc0 = SphericCoordinate.getSphericCoordinate(0.0, 0.0, 1.0);
+		sc1 = SphericCoordinate.getSphericCoordinate(0.0, Math.PI/2, 1);
 	}
 	
 	@Test
@@ -45,10 +45,10 @@ public class CoordinateTest {
 	
 	@Test
 	public void testEquals() throws CoordinateException {
-		assertEquals(true, coordinate0.equals(new CartesianCoordinate(0.0, 0.0, 0.0)));
+		assertEquals(true, coordinate0.equals(CartesianCoordinate.getCartesianCoordinate(0.0, 0.0, 0.0)));
 		assertEquals(false, coordinate0.equals(coordinate1));
 		assertEquals(false, coordinate0.equals(coordinateNegative));
-		assertEquals(true, coordinate2.equals(new CartesianCoordinate(1.0, 0.0, 0.0)));
+		assertEquals(true, coordinate2.equals(CartesianCoordinate.getCartesianCoordinate(1.0, 0.0, 0.0)));
 		assertEquals(false, coordinate1.equals(null)); 
 		assertEquals(true, sc0.isEqual(coordinate3));
 		assertEquals(true, coordinate3.isEqual(sc0));

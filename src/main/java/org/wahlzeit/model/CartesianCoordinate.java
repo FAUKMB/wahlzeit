@@ -10,20 +10,40 @@
 
 package org.wahlzeit.model;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
 /*
  * Invariants:
  * x, y and z are finite and not Double.NaN
  */
 public class CartesianCoordinate extends AbstractCoordinate {
-	private double x;
-	private double y;
-	private double z;
+	private final double x;
+	private final double y;
+	private final double z;
+	
+	private static LinkedList<CartesianCoordinate> cartCoordinates = new LinkedList<>();
 
-	public CartesianCoordinate(double x, double y, double z) throws IllegalStateException {
+	private CartesianCoordinate(double x, double y, double z) throws IllegalStateException {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		assertClassInvariants();
+	}
+	
+	public static CartesianCoordinate getCartesianCoordinate(double x, double y, double z) {
+		synchronized(cartCoordinates) {
+			Iterator<CartesianCoordinate> iter = cartCoordinates.iterator();
+			while(iter.hasNext()) {
+				CartesianCoordinate next = iter.next();
+				if(Math.abs(x - next.getX()) < EPSILON && Math.abs(y - next.getY()) < EPSILON && Math.abs(z - next.getZ()) < EPSILON) {
+					return next;
+				}
+			}
+			CartesianCoordinate retval = new CartesianCoordinate(x, y, z);
+			cartCoordinates.add(retval);
+			return retval;
+		}
 	}
 
 	public double getX() throws IllegalStateException {
@@ -53,7 +73,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	@Override
 	protected boolean doIsEqual(Coordinate cc) {
 		CartesianCoordinate c = cc.asCartesianCoordinate();
-		return Math.abs(x - c.getX()) < EPSILON && Math.abs(y - c.getY()) < EPSILON && Math.abs(z - c.getZ()) < EPSILON;
+		return this == c;
 	}
 
 	public boolean equals(Object c) {
@@ -89,7 +109,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		CartesianCoordinate before = this;
 		double radius = Math.sqrt(x * x + y * y + z * z);
 		if (radius == 0) {
-			return new SphericCoordinate(0.0, 0.0, 0.0);
+			return SphericCoordinate.getSphericCoordinate(0.0, 0.0, 0.0);
 		}
 		double theta = Math.acos(z / radius);
 		double phi;
@@ -101,7 +121,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		} else {
 			phi = Math.signum(y) * Math.PI / 2;
 		}
-		SphericCoordinate retval = new SphericCoordinate(phi, theta, radius);
+		SphericCoordinate retval = SphericCoordinate.getSphericCoordinate(phi, theta, radius);
 		retval.assertClassInvariants();
 		assert this.doIsEqual(before);
 		return retval;
