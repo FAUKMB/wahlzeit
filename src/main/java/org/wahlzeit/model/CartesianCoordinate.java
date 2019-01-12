@@ -13,10 +13,24 @@ package org.wahlzeit.model;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import org.wahlzeit.utils.PatternInstance;
+
 /*
  * Invariants:
  * x, y and z are finite and not Double.NaN
  */
+@PatternInstance(
+	name = "Chain of Responsibility",
+	participants = {
+		"Receiver"
+	}
+)
+@PatternInstance(
+	name = "Template",
+	participants = {
+		"Concrete implementation"
+	}
+)
 public class CartesianCoordinate extends AbstractCoordinate {
 	private final double x;
 	private final double y;

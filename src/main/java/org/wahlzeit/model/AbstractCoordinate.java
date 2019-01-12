@@ -10,6 +10,20 @@
 
 package org.wahlzeit.model;
 
+import org.wahlzeit.utils.PatternInstance;
+
+@PatternInstance(
+	name = "Chain of Responsibility",
+	participants = {
+		"Handler"
+	}
+)
+@PatternInstance(
+	name = "Template",
+	participants = {
+		"Abstract class"
+	}
+)
 public abstract class AbstractCoordinate implements Coordinate {
 
 	public double getCartesianDistance(Coordinate c) throws CoordinateException {

@@ -26,6 +26,7 @@ import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.UserSession;
 import org.wahlzeit.services.Language;
 import org.wahlzeit.utils.HtmlUtil;
+import org.wahlzeit.utils.PatternInstance;
 import org.wahlzeit.webparts.WebPart;
 
 import java.util.Map;
@@ -34,6 +35,12 @@ import java.util.Map;
 /**
  * A handler class for a specific web page.
  */
+@PatternInstance(
+	name = "Strategy",
+	participants = {
+		"Context"
+	}
+)
 public class SetLanguagePageHandler extends AbstractWebPageHandler {
 
 	/**

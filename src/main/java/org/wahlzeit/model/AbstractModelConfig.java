@@ -32,6 +32,7 @@ import org.wahlzeit.services.Language;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.services.SysConfig;
 import org.wahlzeit.utils.EnumValue;
+import org.wahlzeit.utils.PatternInstance;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,6 +46,12 @@ import java.util.logging.Logger;
  * A generic implementation of ModelConfig.
  * Subclasses provide the parameters and language-specific handling of text and data.
  */
+@PatternInstance(
+	name = "Strategy",
+	participants = {
+		"Strategy"
+	}
+)
 public abstract class AbstractModelConfig extends AbstractConfig implements ModelConfig, Serializable {
 
 	private static final Logger log = Logger.getLogger(AbstractModelConfig.class.getName());

@@ -13,12 +13,26 @@ package org.wahlzeit.model;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import org.wahlzeit.utils.PatternInstance;
+
 /*
  * Invariants:
  * radius is not Double.Nan or infinite
  * phi is in between 0 and 2*Math.PI and finite and not Double.NaN
  * theta is in between 0 and Math.PI and finite and not Double.NaN
  */
+@PatternInstance(
+	name = "Chain of Responsibility",
+	participants = {
+		"Receiver"
+	}
+)
+@PatternInstance(
+	name = "Template",
+	participants = {
+		"Concrete implementation"
+	}
+)
 public class SphericCoordinate extends AbstractCoordinate {
 
 	private final double phi;
