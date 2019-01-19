@@ -21,7 +21,7 @@ public class LegoTypeTest {
 	Lego ship;
 	Lego starwars;
 	@Before
-	void setUp(){
+	public void setUp(){
 		manager = LegoManager.getInstance();
 		new LegoType("Lego", null);
 		new LegoType("StarWars", manager.getTypeByName("Lego"));
@@ -32,7 +32,7 @@ public class LegoTypeTest {
 	}
 	
 	@Test
-	void testIsSubtype(){
+	public void testIsSubtype(){
 		assertTrue(ship.getType().isSubtype(lego.getType()));
 		assertTrue(ship.getType().isSubtype(starwars.getType()));
 		assertFalse(starwars.getType().isSubtype(ship.getType()));
